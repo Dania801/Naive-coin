@@ -70,3 +70,26 @@ const isValidNewBlock = (newBlock: Block, previousBLock: Block) => {
     }
     return true;
 };
+
+const isValidBlockStructre = (block: Block): boolean => {
+    return typeof block.index === 'number'
+        && typeof block.hash === 'string'
+        && typeof block.previousHash === 'string'
+        && typeof block.timestamp === 'number'
+        && typeof block.data === 'string';
+} 
+
+const isValidChain = (blockchain: Block[]): boolean => {
+    const isValidGenesis = (block: Block): boolean => {
+        return JSON.stringify(block) === JSON.stringify(genesisBlock);
+    }
+    if(!isValidGenesis(blockchain[0])) {
+        return false;
+    }
+    for (let i = 1; i < blockchain.length; i++) {
+        if(!isValidNewBlock(blockchain[i], blockchain[i-1])){
+            return false;
+        }
+    }
+    return true;
+}
