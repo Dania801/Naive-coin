@@ -1,4 +1,4 @@
-import { CryptoJS } from "crypto-js";
+import * as CryptoJS from 'crypto-js';
 
 class Block {
     public index: number;
@@ -24,7 +24,7 @@ const calculateHash = (index: number,
     previousHash: string, 
     timestamp: number, 
     data: string): string => 
-        CryptoJS.SHA265(index, previousHash, timestamp, data).toString();
+        CryptoJS.SHA256(index + previousHash + timestamp + data).toString();
 
 const genesisBlock: Block = new Block (0, 
     '816534932c2b7154836da6afc367695e6337db8a921823784c14378abed4f7d7', 
@@ -53,11 +53,26 @@ let blockchain: Block[] = [genesisBlock];
 const getBlockchain = () : Block[] => blockchain;
 const getLatestBlock = () : Block => blockchain[blockchain.length -1];
 
+const addBlock = (newBlock: Block) => {
+    if(isValidNewBlock(newBlock, getLatestBlock()) && isValidBlockStructure(newBlock)) {
+        blockchain.push(newBlock);
+    }
+}
+
 const calculateHashForBlock = (block: Block): string => 
     calculateHash(block.index, 
         block.previousHash, 
         block.timestamp, 
         block.data);
+
+const addBlockToChain = (newBlock: Block) : boolean => {
+    if(isValidNewBlock(newBlock, getLatestBlock()) && isValidBlockStructure(newBlock)) {
+        blockchain.push(newBlock);
+        return true;
+    }
+
+    return false;
+}
 
 const isValidNewBlock = (newBlock: Block, previousBLock: Block) => {
     if(previousBLock.index +1 !== newBlock.index) {
@@ -74,7 +89,7 @@ const isValidNewBlock = (newBlock: Block, previousBLock: Block) => {
     return true;
 };
 
-const isValidBlockStructre = (block: Block): boolean => {
+const isValidBlockStructure = (block: Block): boolean => {
     return typeof block.index === 'number'
         && typeof block.hash === 'string'
         && typeof block.previousHash === 'string'
@@ -105,3 +120,5 @@ const replaceChain = (newBlocks: Block[]) => {
         console.log('Recieved invalid blockchain');
     }
 }
+
+export {Block, getBlockchain, getLatestBlock, generateNextBlock, isValidBlockStructure, replaceChain, addBlockToChain};

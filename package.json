@@ -4,11 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "crypto-js": "^3.1.9-1"
+    "babel": "^6.23.0",
+    "crypto-js": "^3.1.9-1",
+    "mocha": "^5.2.0",
+    "ws": "^6.0.0"
   }
 }
