@@ -34,7 +34,7 @@ const genesisBlock: Block = new Block (0,
 const generateNextBlock = (blockData: string) => {
     const previousBLock: Block = getLatestBlock();
     const nextIndex: number = previousBLock.index +1;
-    const nextTimestamp: number = new Data().getTime() /1000;
+    const nextTimestamp: number = new Date().getTime() /1000;
     const nextHash: string = calculateHash(nextIndex, 
         previousBLock.hash, 
         nextTimestamp, 
@@ -48,7 +48,10 @@ const generateNextBlock = (blockData: string) => {
     return newBlock;
 }
 
-const blockchain: Block[] = [genesisBlock];
+let blockchain: Block[] = [genesisBlock];
+
+const getBlockchain = () : Block[] => blockchain;
+const getLatestBlock = () : Block => blockchain[blockchain.length -1];
 
 const calculateHashForBlock = (block: Block): string => 
     calculateHash(block.index, 
@@ -92,4 +95,13 @@ const isValidChain = (blockchain: Block[]): boolean => {
         }
     }
     return true;
+}
+
+const replaceChain = (newBlocks: Block[]) => {
+    if (isValidChain(newBlocks) && newBlocks.length > getBlockchain().length) {
+        console.log('Recieved valid blockchain. Replacing current blockchain with the new one...');
+        blockchain = newBlocks;
+    } else {
+        console.log('Recieved invalid blockchain');
+    }
 }
