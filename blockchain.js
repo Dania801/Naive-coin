@@ -65,7 +65,7 @@ var isValidNewBlock = function (newBlock, previousBLock) {
 var isValidBlockStructure = function (block) {
     return typeof block.index === 'number'
         && typeof block.hash === 'string'
-        && typeof block.previousHash === 'string'
+        && (typeof block.previousHash === 'string' || (block.index === 0 && block.previousHash === null))
         && typeof block.timestamp === 'number'
         && typeof block.data === 'string';
 };

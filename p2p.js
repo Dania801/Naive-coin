@@ -91,8 +91,9 @@ var handleBlockchainResponse = function (receivedBlocks) {
         return;
     }
     var latestBlockReceived = receivedBlocks[receivedBlocks.length - 1];
+    console.log('latest block! ===> ', latestBlockReceived);
     if (!blockchain_1.isValidBlockStructure(latestBlockReceived)) {
-        console.log('block structuture not valid');
+        console.log('block structure not valid');
         return;
     }
     var latestBlockHeld = blockchain_1.getLatestBlock();
